@@ -1,0 +1,32 @@
+.card {
+  text-align: center;
+  border: 2px solid #020202;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px;
+  height: 120px;
+}
+
+.avatar_friends {
+  width: 48px;
+}
+
+.friend_name {
+  margin: 8px 0;
+  font-weight: bold;
+}
+
+.status {
+  color: #888;
+}
+
+.list_container {
+  display: flex;
+}
+
+.online {
+  color: green;
+}
+.offline {
+  color: red;
+}
