@@ -1,25 +1,48 @@
-import "./App.css";
-import { Profile } from "../Profile/Profile";
-import userData from "../../userData.json";
-import { FriendList } from "../FriendList/FriendList";
-import friends from "../../friends.json";
-import { TransactionHistory } from "../TransactionHistoy/TransactionHistory";
-import transactions from "../../transactions.json";
+import { useState } from "react";
+import Description from "../Description/Description";
+import Options from "../Options/Options";
+import Feedback from "../Feedback/Feedback";
+import Notification from "../Notification/Notification";
 
-export const App = () => {
+import "./App.css";
+
+export default function App() {
+  const [feedbackTypes, setFeedbackTypes] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  });
+
+  const updateFeedback = (feedbackType) => {
+    if (feedbackType === "reset") {
+      setFeedbackTypes({ good: 0, neutral: 0, bad: 0 });
+    } else {
+      setFeedbackTypes((prevFeedbackTypes) => ({
+        ...prevFeedbackTypes,
+        [feedbackType]: prevFeedbackTypes[feedbackType] + 1,
+      }));
+    }
+  };
+  const totalFeedback =
+    feedbackTypes.good + feedbackTypes.neutral + feedbackTypes.bad;
+
+  const calculateTotalFeedback = Math.round(
+    ((feedbackTypes.good + feedbackTypes.neutral) / totalFeedback) * 100
+  );
+
   return (
     <>
-      <Profile
-        name={userData.username}
-        tag={userData.tag}
-        location={userData.location}
-        image={userData.avatar}
-        stats={userData.stats}
-      />
+      <Description />
+      <Options updateFeedback={updateFeedback} totalFeedback={totalFeedback} />
 
-      <FriendList friends={friends} />
-
-      <TransactionHistory items={transactions} />
+      {totalFeedback === 0 ? (
+        <Notification />
+      ) : (
+        <Feedback
+          feedbackTypes={feedbackTypes}
+          calculateTotalFeedback={calculateTotalFeedback}
+        />
+      )}
     </>
   );
-};
+}
