@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Description from "../Description/Description";
 import Options from "../Options/Options";
 import Feedback from "../Feedback/Feedback";
@@ -7,11 +7,24 @@ import Notification from "../Notification/Notification";
 import "./App.css";
 
 export default function App() {
-  const [feedbackTypes, setFeedbackTypes] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
+  const [feedbackTypes, setFeedbackTypes] = useState(() => {
+    const savedFeedback = window.localStorage.getItem("saved-feedback");
+    if (savedFeedback !== null) {
+      return JSON.parse(savedFeedback);
+    }
+    return {
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    };
   });
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "saved-feedback",
+      JSON.stringify(feedbackTypes)
+    );
+  }, [feedbackTypes]);
 
   const updateFeedback = (feedbackType) => {
     if (feedbackType === "reset") {
@@ -31,7 +44,7 @@ export default function App() {
   );
 
   return (
-    <>
+    <div className="app-container">
       <Description />
       <Options updateFeedback={updateFeedback} totalFeedback={totalFeedback} />
 
@@ -41,8 +54,9 @@ export default function App() {
         <Feedback
           feedbackTypes={feedbackTypes}
           calculateTotalFeedback={calculateTotalFeedback}
+          totalFeedback={totalFeedback}
         />
       )}
-    </>
+    </div>
   );
 }

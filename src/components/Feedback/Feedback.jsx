@@ -1,17 +1,26 @@
-export default function Feedback({ feedbackTypes, calculateTotalFeedback }) {
+import css from "./Feedback.module.css";
+
+export default function Feedback({
+  feedbackTypes,
+  calculateTotalFeedback,
+  totalFeedback,
+}) {
   return (
-    <ul>
+    <ul className={css.ul}>
       <li>
-        <p>Good: {feedbackTypes.good}</p>
+        <p className={css.text}>Good: {feedbackTypes.good}</p>
       </li>
       <li>
-        <p>Neutral: {feedbackTypes.neutral} </p>
+        <p className={css.text}>Neutral: {feedbackTypes.neutral} </p>
       </li>
       <li>
-        <p>Bad: {feedbackTypes.bad}</p>
+        <p className={css.text}>Bad: {feedbackTypes.bad}</p>
       </li>
       <li>
-        <p>Positive: {calculateTotalFeedback}%</p>
+        <p className={css.text}>Total: {totalFeedback}</p>
+      </li>
+      <li>
+        <p className={css.text}>Positive: {calculateTotalFeedback}%</p>
       </li>
     </ul>
   );
